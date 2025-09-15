@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Splash Screen</title>
+    <meta http-equiv="refresh" content="3;url={{ url_for('welcome') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: black; /* Fallback */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            animation: background-pulse 15s ease-in-out infinite; /* Apply background animation */
+        }
+
+        .logo {
+            animation: flash 2s ease-in-out forwards, glow 3s ease-in-out infinite; /* Combine flash and glow */
+            max-width: 350px;
+            /* Ensure the logo has a display property if it's an inline element by default */
+            display: block; 
+        }
+
+        /* Keyframes for the logo's initial flash effect */
+        @keyframes flash {
+            0%   { opacity: 0; transform: scale(0.5); filter: blur(10px); }
+            50%  { opacity: 1; transform: scale(1.1); filter: blur(0px); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Keyframes for the logo's glow effect */
+        @keyframes glow {
+            0% {
+                filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+            }
+            50% {
+                filter: drop-shadow(0 0 20px rgba(255, 255, 255, 1));
+            }
+            100% {
+                filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+            }
+        }
+
+        /* Keyframes for the background gradient animation */
+        @keyframes background-pulse {
+            0% {
+                background: linear-gradient(135deg, #0f2027, #2c5364);
+            }
+            50% {
+                background: linear-gradient(135deg, #203a43, #2c5364, #0f2027);
+            }
+            100% {
+                background: linear-gradient(135deg, #0f2027, #2c5364);
+            }
+        }
+    </style>
+</head>
+<body>
+    <img src="{{ url_for('static', filename='bytetrack_logo.jpeg') }}" class="logo" alt="Logo">
+</body>
+</html>

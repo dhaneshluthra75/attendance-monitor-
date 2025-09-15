@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or "Attendance System" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <h1>Attendance & Analytics</h1>
+      <div class="badge">Flask • OpenCV • SQLite</div>
+    </header>
+    <nav>
+      <a class="btn" href="{{ url_for('index') }}">Home</a>
+      <a class="btn" href="{{ url_for('add_person') }}">Add New Person</a>
+      <a class="btn" href="{{ url_for('attendance_list') }}">Attendance Log</a>
+      <a class="btn" href="{{ url_for('analytics') }}">Analytics</a>
+    </nav>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <div class="card">
+      {% block content %}{% endblock %}
+    </div>
+    <footer>
+      <p class="small">Tip: good lighting helps recognition. Keep ~30–50 cm from the camera.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Data - Attendance Monitor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #432c69 0%, #d24982 100%);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .main-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            max-width: 900px;
+            width: 100%;
+        }
+        h2, h3 {
+            margin-bottom: 20px;
+        }
+        .btn-custom {
+            margin-top: 20px;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 30px;
+        }
+        .form-control {
+            border-radius: 30px;
+            padding: 12px 20px;
+        }
+        .table {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table thead th {
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .table tbody tr {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .alert {
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-box">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if admin_access %}
+            <h2>Manage Data</h2>
+            {% if people %}
+                <form action="{{ url_for('delete_selected') }}" method="post">
+                    <div class="table-responsive mt-4">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="selectAll"></th>
+                                    <th>Name</th>
+                                    <th>Designation</th>
+                                    <th>Year</th>
+                                    <th>Course</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for person in people %}
+                                    <tr>
+                                        <td><input type="checkbox" name="person_id" value="{{ person.id }}"></td>
+                                        <td>{{ person.name }}</td>
+                                        <td>{{ person.designation }}</td>
+                                        <td>{{ person.year }}</td>
+                                        <td>{{ person.course }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="submit" class="btn btn-danger btn-custom" onclick="return confirm('Are you sure you want to delete the selected records? This action cannot be undone.');">
+                        Delete Selected Records
+                    </button>
+                </form>
+            {% else %}
+                <h3>No data available to manage.</h3>
+                <a href="{{ url_for('add_person') }}" class="btn btn-light btn-custom">Add a New Person</a>
+            {% endif %}
+            <a href="{{ url_for('menu') }}" class="btn btn-secondary btn-custom">Back to Menu</a>
+
+        {% else %}
+            <h3>Admin Access Required</h3>
+            <form action="{{ url_for('manage_data') }}" method="post">
+                <div class="mb-3">
+                    <input type="password" name="password" class="form-control text-center" placeholder="Admin Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-custom">Submit</button>
+            </form>
+            <a href="{{ url_for('menu') }}" class="btn btn-secondary btn-custom">Back to Menu</a>
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById('selectAll').onclick = function() {
+            var checkboxes = document.getElementsByName('person_id');
+            for (var checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        }
+    </script>
+</body>
+</html>

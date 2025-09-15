@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Attendance Status</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #432c69 0%, #d24982 100%);
+      color: white;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .status-box {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      max-width: 500px;
+      width: 100%;
+    }
+    .status-box h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      color: #5a67d8; /* indigo-600 */
+    }
+    .status-text {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .status-present {
+      color: #16a34a; /* green-600 */
+      font-weight: 600;
+    }
+    .status-already {
+      color: #ca8a04; /* yellow-600 */
+      font-weight: 600;
+    }
+    .status-absent {
+      color: #dc2626; /* red-600 */
+      font-weight: 600;
+    }
+    .btn-custom {
+      padding: 12px 30px;
+      font-size: 1.125rem;
+      border-radius: 30px;
+      margin: 0 10px;
+      min-width: 120px;
+    }
+  </style>
+</head>
+<body>
+  <div class="status-box">
+    <h1>📋 Attendance Status</h1>
+
+    <p class="status-text"><strong>Name:</strong> {{ person_name }}</p>
+    <p class="status-text"><strong>Date:</strong> {{ date }}</p>
+    <p class="status-text"><strong>Time:</strong> {{ time }}</p>
+
+    <p class="status-text 
+      {% if status == 'Present' %}status-present
+      {% elif status == 'Already Marked Today' %}status-already
+      {% else %}status-absent
+      {% endif %}">
+      {{ status }}
+    </p>
+
+    <div class="d-flex justify-content-center mt-4">
+      <a href="{{ url_for('attendance') }}" class="btn btn-primary btn-custom">📷 Scan new</a>
+      <a href="{{ url_for('menu') }}" class="btn btn-secondary btn-custom">🏠 Back to Menu</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
